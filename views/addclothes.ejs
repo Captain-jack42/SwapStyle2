@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Clothes - SwapStyle</title>
+    <link rel="stylesheet" href="/addclothes.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-shape shape1"></div>
+        <div class="bg-shape shape2"></div>
+        <div class="bg-shape shape3"></div>
+        <div class="bg-shape shape4"></div>
+        <div class="bg-shape shape5"></div>
+    </div>
+
+    <!-- Navbar -->
+    <%- include('partials/navbar') %>
+
+    <div class="main-container">
+        <!-- Add Clothes Section -->
+        <section class="add-clothes-section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Add New Clothes</h1>
+                    <p>Share your pre-loved clothes with the community</p>
+                </div>
+                
+                <div class="add-clothes-content">
+                    <!-- Image Upload Section -->
+                    <div class="image-upload-section">
+                        <div class="upload-area">
+                            <div class="upload-preview">
+                                <img id="imagePreview" src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Clothes Preview">
+                                <div class="upload-overlay">
+                                    <i class="fas fa-image"></i>
+                                    <p>Image Preview</p>
+                                </div>
+                            </div>
+                            <div class="upload-info">
+                                <p><i class="fas fa-info-circle"></i> Enter image URL in the form to see preview</p>
+                                <p><i class="fas fa-link"></i> Supports: JPG, PNG, WebP, GIF</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Section -->
+                    <div class="form-section">
+                        <form class="add-clothes-form" action="/addClothes" method="POST">
+                            <div class="form-group">
+                                <label for="itemName">Item Name *</label>
+                                <input type="text" id="itemName" name="itemName" placeholder="e.g., Vintage Denim Jacket" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="category">Category *</label>
+                                    <select id="category" name="category" required>
+                                        <option value="">Select Category</option>
+                                        <option value="womens">Women's Clothing</option>
+                                        <option value="mens">Men's Clothing</option>
+                                        <option value="kids">Kids</option>
+                                        <option value="footwear">Footwear</option>
+                                        <option value="accessories">Accessories</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subcategory">Subcategory</label>
+                                    <select id="subcategory" name="subcategory">
+                                        <option value="">Select Subcategory</option>
+                                        <option value="dresses">Dresses</option>
+                                        <option value="tops">Tops</option>
+                                        <option value="bottoms">Bottoms</option>
+                                        <option value="outerwear">Outerwear</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="size">Size *</label>
+                                    <select id="size" name="size" required>
+                                        <option value="">Select Size</option>
+                                        <option value="XS">XS</option>
+                                        <option value="S">S</option>
+                                        <option value="M">M</option>
+                                        <option value="L">L</option>
+                                        <option value="XL">XL</option>
+                                        <option value="XXL">XXL</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="condition">Condition *</label>
+                                    <select id="condition" name="condition" required>
+                                        <option value="">Select Condition</option>
+                                        <option value="new">Like New</option>
+                                        <option value="excellent">Excellent</option>
+                                        <option value="good">Good</option>
+                                        <option value="fair">Fair</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="brand">Brand</label>
+                                    <input type="text" id="brand" name="brand" placeholder="e.g., Levi's, Nike">
+                                </div>
+                                <div class="form-group">
+                                    <label for="color">Color</label>
+                                    <input type="text" id="color" name="color" placeholder="e.g., Blue, Black, Red">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="price">Price ($) *</label>
+                                    <input type="number" id="price" name="price" placeholder="0.00" min="0" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="points">Points Value</label>
+                                    <input type="number" id="points" name="points" placeholder="0" min="0">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mainImageUrl">Image URL *</label>
+                                <input type="url" id="mainImageUrl" name="mainImageUrl" placeholder="https://example.com/image.jpg" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description">Description *</label>
+                                <textarea id="description" name="description" rows="4" placeholder="Describe your item in detail..." required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tags">Tags (comma separated)</label>
+                                <input type="text" id="tags" name="tags" placeholder="vintage, denim, casual, trendy">
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Add Clothes
+                                </button>
+                                <!-- <button type="button" class="btn btn-secondary">
+                                    <i class="fas fa-save"></i> Save Draft
+                                </button> -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- User's Listed Items Section -->
+        <section class="listed-items-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Your Listed Items</h2>
+                    <p>Manage your current listings</p>
+                </div>
+                
+                <div class="items-grid">
+                    <div class="item-card">
+                        <div class="item-image">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Floral Summer Dress">
+                            <div class="item-status active">Active</div>
+                            <div class="item-actions-overlay">
+                                <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="item-content">
+                            <h3>Floral Summer Dress</h3>
+                            <div class="item-category">Women's Clothing</div>
+                            <div class="item-price">
+                                <span class="price">$20</span>
+                                <span class="points">200 pts</span>
+                            </div>
+                            <div class="item-meta">
+                                <span class="size">Size: M</span>
+                                <span class="condition">Excellent</span>
+                            </div>
+                            <div class="item-stats">
+                                <span class="views"><i class="fas fa-eye"></i> 45 views</span>
+                                <span class="date">Listed: 2024-05-01</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item-card">
+                        <div class="item-image">
+                            <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" alt="Men's Denim Jacket">
+                            <div class="item-status sold">Sold</div>
+                            <div class="item-actions-overlay">
+                                <button class="action-btn view-btn"><i class="fas fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="item-content">
+                            <h3>Men's Denim Jacket</h3>
+                            <div class="item-category">Men's Clothing</div>
+                            <div class="item-price">
+                                <span class="price">$25</span>
+                                <span class="points">250 pts</span>
+                            </div>
+                            <div class="item-meta">
+                                <span class="size">Size: L</span>
+                                <span class="condition">Good</span>
+                            </div>
+                            <div class="item-stats">
+                                <span class="views"><i class="fas fa-eye"></i> 78 views</span>
+                                <span class="date">Sold: 2024-04-15</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="item-card">
+                        <div class="item-image">
+                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300" alt="Running Shoes">
+                            <div class="item-status pending">Pending</div>
+                            <div class="item-actions-overlay">
+                                <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="item-content">
+                            <h3>Running Shoes</h3>
+                            <div class="item-category">Footwear</div>
+                            <div class="item-price">
+                                <span class="price">$35</span>
+                                <span class="points">350 pts</span>
+                            </div>
+                            <div class="item-meta">
+                                <span class="size">Size: 42</span>
+                                <span class="condition">Good</span>
+                            </div>
+                            <div class="item-stats">
+                                <span class="views"><i class="fas fa-eye"></i> 12 views</span>
+                                <span class="date">Listed: 2024-05-05</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+  
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Image URL preview
+        const mainImageUrlInput = document.getElementById('mainImageUrl');
+        const imagePreview = document.getElementById('imagePreview');
+
+        mainImageUrlInput.addEventListener('input', function() {
+            if (this.value) {
+                imagePreview.src = this.value;
+                imagePreview.onerror = function() {
+                    imagePreview.src = 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80';
+                };
+            }
+        });
+
+        // Form submission handling
+        document.querySelector('.add-clothes-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate image URL
+            if (!mainImageUrlInput.value) {
+                alert('Please enter an image URL');
+                return;
+            }
+            
+            // Submit the form
+            this.submit();
+        });
+    </script>
+</body>
+</html>

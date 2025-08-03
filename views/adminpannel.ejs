@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - SwapStyle</title>
+    <link rel="stylesheet" href="/adminpannel.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-shape shape1"></div>
+        <div class="bg-shape shape2"></div>
+        <div class="bg-shape shape3"></div>
+        <div class="bg-shape shape4"></div>
+        <div class="bg-shape shape5"></div>
+    </div>
+
+    <%- include('partials/navbar') %>
+
+    <div class="admin-container">
+        <!-- Admin Header -->
+        <section class="admin-header">
+            <div class="container">
+                <div class="admin-info">
+                    <div class="admin-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="admin-details">
+                        <h1>Admin Panel</h1>
+                        <p>Welcome, <strong>Admin</strong>. Manage users, orders, and listings below.</p>
+                    </div>
+                    <div class="admin-stats">
+                        <div class="stat-item">
+                            <span class="stat-number"><%= users ? users.length : 0 %></span>
+                            <span class="stat-label">Users</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">45</span>
+                            <span class="stat-label">Orders</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">78</span>
+                            <span class="stat-label">Listings</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Users Management -->
+        <section class="management-section">
+            <div class="section-header">
+                <h2><i class="fas fa-users"></i> Manage Users</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary"><i class="fas fa-user-plus"></i> Add User</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (users && users.length > 0) { %>
+                            <% users.forEach(function(user) { %>
+                                <tr>
+                                    <td class="user-info">
+                                        <img src="<%= user.avatar || 'https://randomuser.me/api/portraits/lego/1.jpg' %>" alt="User">
+                                        <%= user.firstname || user.name || user.username || 'No Name' %>
+                                    </td>
+                                    <td><%= user.email %></td>
+                                    <td>
+                                        <span class="status-badge active">Active</span>
+                                    </td>
+                                    <td>
+                                        <%= user.joined ? user.joined.toISOString().slice(0,10) : 'N/A' %>
+                                    </td>
+                                    <td>
+                                        <form action="/admin/deleteUser" method="POST" style="display:inline;">
+                                            <input type="hidden" name="userId" value="<%= user._id %>">
+                                            <button class="btn-sm btn-delete" onclick="return confirm('Delete this user?')"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="5" style="text-align:center;">No users found.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Orders Management -->
+        <section class="management-section">
+            <div class="section-header">
+                <h2><i class="fas fa-box"></i> Manage Orders</h2>
+            </div>
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>User</th>
+                            <th>Item</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (orders && orders.length > 0) { %>
+                            <% orders.forEach(function(order) { %>
+                                <tr>
+                                    <td><%= order._id %></td>
+                                    <td class="user-info">
+                                        <img src="https://randomuser.me/api/portraits/lego/2.jpg" alt="User">
+                                        <%= order.buyerEmail %>
+                                    </td>
+                                    <td><%= order.itemName %></td>
+                                    <td><span class="status-badge completed"><%= order.status %></span></td>
+                                    <td><%= order.purchasedAt ? new Date(order.purchasedAt).toLocaleDateString() : 'N/A' %></td>
+                                    <td>
+                                        <form action="/admin/deleteOrder" method="POST" style="display:inline;">
+                                            <input type="hidden" name="orderId" value="<%= order._id %>">
+                                            <button class="btn-sm btn-delete" onclick="return confirm('Delete this order?')"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr><td colspan="6" style="text-align:center;">No orders found.</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Listings Management -->
+        <section class="management-section">
+            <div class="section-header">
+                <h2><i class="fas fa-list"></i> Manage Listings</h2>
+            </div>
+            <div class="listings-grid">
+                <% if (listings && listings.length > 0) { %>
+                    <% listings.forEach(function(listing) { %>
+                        <div class="listing-card">
+                            <div class="listing-image">
+                                <img src="<%= listing.mainImageUrl || 'https://via.placeholder.com/150' %>" alt="<%= listing.itemName %>">
+                                <div class="listing-status <%= listing.status %>"><%= listing.status %></div>
+                                <div class="listing-actions">
+                                    <form action="/admin/deleteListing" method="POST" style="display:inline;">
+                                        <input type="hidden" name="listingId" value="<%= listing._id %>">
+                                        <button class="action-btn reject-btn" onclick="return confirm('Delete this listing?')"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="listing-content">
+                                <h3><%= listing.itemName %></h3>
+                                <div class="listing-category"><%= listing.category %></div>
+                                <div class="listing-price">
+                                    <span class="price">$<%= listing.price %></span>
+                                    <span class="points"><%= listing.points %> pts</span>
+                                </div>
+                                <div class="listing-meta">
+                                    <span class="size">Size: <%= listing.size %></span>
+                                    <span class="condition"><%= listing.condition %></span>
+                                </div>
+                                <div class="listing-stats">
+                                    <span class="date"><%= listing.createdAt ? 'Listed: ' + new Date(listing.createdAt).toLocaleDateString() : '' %></span>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div style="width:100%;text-align:center;color:#aaa;font-size:1.2rem;padding:40px 0;">
+                        No listings found.
+                    </div>
+                <% } %>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

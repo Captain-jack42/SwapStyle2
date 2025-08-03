@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwapStyle - Exchange Your Clothes</title>
+    <link rel="stylesheet" href="/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+     <%- include('partials/navbar') %>
+    <!-- Navbar -->
+
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Swap Your Style, Save the Planet</h1>
+            <p>Exchange your gently used clothes with others, refresh your wardrobe, and help reduce fashion waste. Join the community of eco-friendly swappers today!</p>
+            <div class="hero-buttons">
+                <a href="/addClothes" class="btn btn-primary" >Start Swapping</a>
+                <a href="/itemlisting" class="btn btn-secondary">Browse Items</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="image-slider">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" class="slide active" alt="Clothes 1">
+                <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80" class="slide" alt="Clothes 2">
+                <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7c9b?auto=format&fit=crop&w=600&q=80" class="slide" alt="Clothes 3">
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories" id="browse">
+        <h2>Categories</h2>
+        <div class="categories-grid">
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-female"></i></div>
+                <h3>Women's Clothing</h3>
+                <p>Dresses, tops, jeans, jackets, and more.</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-male"></i></div>
+                <h3>Men's Clothing</h3>
+                <p>Shirts, pants, outerwear, and more.</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-child"></i></div>
+                <h3>Kids</h3>
+                <p>Clothes for boys and girls of all ages.</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-shoe-prints"></i></div>
+                <h3>Footwear</h3>
+                <p>Shoes, sandals, boots, and more.</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon"><i class="fas fa-hat-cowboy"></i></div>
+                <h3>Accessories</h3>
+                <p>Hats, bags, belts, and more.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Listing Section -->
+    <section class="products">
+        <h2>Latest Swappable Items</h2>
+        <div class="products-grid">
+            <% if (typeof colthList !== 'undefined' && colthList.length > 0) { %>
+                <% colthList.slice(0, 4).forEach(item => { %>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="<%= item.mainImageUrl %>" alt="<%= item.itemName %>">
+                            <div class="product-overlay">
+                                <a href="/itemlisting" class="btn-sm">Swap Now</a>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3><%= item.itemName %></h3>
+                            <div class="product-category"><%= item.category %></div>
+                            <div class="product-meta">Size: <%= item.size %> &bull; Condition: <%= item.condition %></div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <!-- Fallback items if no data is available -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Product 1">
+                        <div class="product-overlay">
+                            <a href="/itemlisting" class="btn-sm">Swap Now</a>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Floral Summer Dress</h3>
+                        <div class="product-category">Women's Clothing</div>
+                        <div class="product-meta">Size: M &bull; Condition: Like New</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" alt="Product 2">
+                        <div class="product-overlay">
+                            <a href="/itemlisting" class="btn-sm">Swap Now</a>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Men's Denim Jacket</h3>
+                        <div class="product-category">Men's Clothing</div>
+                        <div class="product-meta">Size: L &bull; Condition: Good</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Product 3">
+                        <div class="product-overlay">
+                            <a href="/itemlisting" class="btn-sm">Swap Now</a>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Kids' Hoodie</h3>
+                        <div class="product-category">Kids</div>
+                        <div class="product-meta">Size: 8Y &bull; Condition: Excellent</div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7c9b?auto=format&fit=crop&w=400&q=80" alt="Product 4">
+                        <div class="product-overlay">
+                            <a href="/itemlisting" class="btn-sm">Swap Now</a>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Stylish Sneakers</h3>
+                        <div class="product-category">Footwear</div>
+                        <div class="product-meta">Size: 9 &bull; Condition: Good</div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 SwapStyle. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JS for Hamburger and Image Slider -->
+    <script>
+        // Hamburger menu for mobile
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        // Image slider
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 2500);
+    </script>
+    <!-- Chatbot Floating Button and Iframe -->
+    <div id="chatbot-fab">
+        <i class="fas fa-comments"></i>
+    </div>
+    <div id="chatbot-iframe-container">
+        <iframe id="chatbot-iframe" src="https://stylechatbot-1.onrender.com" frameborder="0"></iframe>
+        <button id="chatbot-close">&times;</button>
+    </div>
+    <script>
+        const chatbotFab = document.getElementById('chatbot-fab');
+        const chatbotContainer = document.getElementById('chatbot-iframe-container');
+        const chatbotClose = document.getElementById('chatbot-close');
+    
+        chatbotFab.addEventListener('click', () => {
+            chatbotContainer.style.display = 'flex';
+            chatbotFab.style.display = 'none';
+        });
+        chatbotClose.addEventListener('click', () => {
+            chatbotContainer.style.display = 'none';
+            chatbotFab.style.display = 'flex';
+        });
+    </script>
+</body>
+</html>

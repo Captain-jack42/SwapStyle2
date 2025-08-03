@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - SwapStyle</title>
+    <link rel="stylesheet" href="/payment.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-shape shape1"></div>
+        <div class="bg-shape shape2"></div>
+        <div class="bg-shape shape3"></div>
+        <div class="bg-shape shape4"></div>
+        <div class="bg-shape shape5"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-tshirt"></i> SwapStyle
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/home" class="nav-link">Home</a></li>
+                <li><a href="/itemlisting" class="nav-link">Browse</a></li>
+                <li><a href="/addclothes" class="nav-link">Add clothes</a></li>
+                <li><a href="/userDashboard" class="nav-link">Dashboard</a></li>
+                <li><a href="/login" class="nav-link">Login</a></li>
+                <li><a href="/Signin" class="nav-link">Sign Up</a></li>
+                <li><a href="/feedback" class="nav-link">Feedback</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="payment-container">
+        <div class="payment-content">
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+                <div class="item-details">
+                    <img id="itemImage" src="" alt="Item">
+                    <div class="item-info">
+                        <h3 id="itemName"></h3>
+                        <p id="itemCategory"></p>
+                        <p id="itemSize"></p>
+                        <p id="itemCondition"></p>
+                    </div>
+                </div>
+                <div class="price-breakdown">
+                    <div class="price-row">
+                        <span>Item Price:</span>
+                        <span id="itemPrice"></span>
+                    </div>
+                    <div class="price-row">
+                        <span>Points Value:</span>
+                        <span id="itemPoints"></span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total:</span>
+                        <span id="totalPrice"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods">
+                <h2>Choose Payment Method</h2>
+                
+                <div class="payment-options">
+                    <div class="payment-option" data-method="card">
+                        <input type="radio" name="payment" id="card" value="card">
+                        <label for="card">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Credit/Debit Card</span>
+                        </label>
+                    </div>
+
+                    <div class="payment-option" data-method="paypal">
+                        <input type="radio" name="payment" id="paypal" value="paypal">
+                        <label for="paypal">
+                            <i class="fab fa-paypal"></i>
+                            <span>PayPal</span>
+                        </label>
+                    </div>
+
+                    <div class="payment-option" data-method="points">
+                        <input type="radio" name="payment" id="points" value="points">
+                        <label for="points">
+                            <i class="fas fa-coins"></i>
+                            <span>Pay with Points</span>
+                        </label>
+                    </div>
+
+                    <div class="payment-option" data-method="bank">
+                        <input type="radio" name="payment" id="bank" value="bank">
+                        <label for="bank">
+                            <i class="fas fa-university"></i>
+                            <span>Bank Transfer</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="payment-form" id="cardForm" style="display: none;">
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <input type="text" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <input type="text" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input type="text" placeholder="123" maxlength="3">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Cardholder Name</label>
+                        <input type="text" placeholder="John Doe">
+                    </div>
+                </div>
+
+                <div class="payment-form" id="paypalForm" style="display: none;">
+                    <p>You will be redirected to PayPal to complete your payment.</p>
+                </div>
+
+                <div class="payment-form" id="pointsForm" style="display: none;">
+                    <p>You have <span id="userPoints">0</span> points available.</p>
+                    <p>This purchase will cost <span id="requiredPoints">0</span> points.</p>
+                </div>
+
+                <div class="payment-form" id="bankForm" style="display: none;">
+                    <p>Bank transfer details will be sent to your email after order confirmation.</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="payment-actions">
+                    <button class="btn btn-secondary" onclick="window.history.back()">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn btn-primary" onclick="processPayment()">
+                        <i class="fas fa-lock"></i> Pay Now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load item data from sessionStorage
+        const selectedItem = JSON.parse(sessionStorage.getItem('selectedItem') || '{}');
+        
+        // Populate order summary
+        document.getElementById('itemImage').src = selectedItem.mainImageUrl || '';
+        document.getElementById('itemName').textContent = selectedItem.itemName || 'Item Name';
+        document.getElementById('itemCategory').textContent = selectedItem.category || 'Category';
+        document.getElementById('itemSize').textContent = `Size: ${selectedItem.size || 'N/A'}`;
+        document.getElementById('itemCondition').textContent = `Condition: ${selectedItem.condition || 'N/A'}`;
+        document.getElementById('itemPrice').textContent = `$${selectedItem.price || 0}`;
+        document.getElementById('itemPoints').textContent = `${selectedItem.points || 0} pts`;
+        document.getElementById('totalPrice').textContent = `$${selectedItem.price || 0}`;
+        document.getElementById('requiredPoints').textContent = selectedItem.points || 0;
+
+        // Payment method selection
+        document.querySelectorAll('input[name="payment"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Hide all forms
+                document.querySelectorAll('.payment-form').forEach(form => {
+                    form.style.display = 'none';
+                });
+                
+                // Show selected form
+                const method = this.value;
+                const form = document.getElementById(method + 'Form');
+                if (form) {
+                    form.style.display = 'block';
+                }
+            });
+        });
+
+        function processPayment() {
+            const selectedMethod = document.querySelector('input[name="payment"]:checked');
+            if (!selectedMethod) {
+                alert('Please select a payment method');
+                return;
+            }
+
+            // Show loading state
+            const payBtn = document.querySelector('.btn-primary');
+            payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            payBtn.disabled = true;
+
+            // Simulate payment processing
+            setTimeout(() => {
+                // Set the itemId in the hidden form
+                document.getElementById('purchaseItemId').value = selectedItem._id;
+                // Submit the form to actually save the purchase
+                document.getElementById('purchaseForm').submit();
+            }, 2000);
+        }
+
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    </script>
+    <form id="purchaseForm" action="/purchase" method="POST" style="display:none;">
+        <input type="hidden" name="itemId" id="purchaseItemId" value="">
+    </form>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Listing - ClothesSwap</title>
+    <link rel="stylesheet" href="/itemlisting.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-shape shape1"></div>
+        <div class="bg-shape shape2"></div>
+        <div class="bg-shape shape3"></div>
+        <div class="bg-shape shape4"></div>
+        <div class="bg-shape shape5"></div>
+    </div>
+
+    <!-- Navbar -->
+     <%- include('partials/navbar') %>
+    <!-- Navbar -->
+
+
+    <!-- Featured Item Section -->
+    <section class="featured-item">
+        <div class="container">
+            <h2 class="section-title">Featured Item</h2>
+            <div class="featured-content">
+                <div class="featured-image">
+                    <img id="featuredImage" src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=600" alt="Vintage Denim Jacket">
+                    <div class="image-overlay">
+                        <button class="view-btn"><i class="fas fa-eye"></i> View Gallery</button>
+                    </div>
+                </div>
+                <div class="featured-details">
+                    <div class="item-header">
+                        <h1 id="featuredTitle">Vintage Denim Jacket</h1>
+                        <div class="item-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span>(4.5/5)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="item-price">
+                        <span class="price" id="featuredPrice">$45</span>
+                        <span class="points" id="featuredPoints">or 450 points</span>
+                    </div>
+
+                    <div class="item-info">
+                        <div class="info-row">
+                            <span class="label">Category:</span>
+                            <span class="value" id="featuredCategory">Casual Wear</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Size:</span>
+                            <span class="value" id="featuredSize">Medium (M)</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Condition:</span>
+                            <span class="value excellent" id="featuredCondition">Excellent</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Brand:</span>
+                            <span class="value" id="featuredBrand">Levi's</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="label">Color:</span>
+                            <span class="value" id="featuredColor">Blue Denim</span>
+                        </div>
+                    </div>
+
+                    <div class="item-description">
+                        <h3>Description</h3>
+                        <p id="featuredDescription">This vintage denim jacket is in excellent condition with minimal wear. Features classic styling with brass buttons and comfortable fit. Perfect for casual outings and layering. The jacket has been well-maintained and is ready for its next owner.</p>
+                    </div>
+
+                    <div class="seller-info">
+                        <h3>Seller Information</h3>
+                        <div class="seller-details">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=50" alt="Seller" class="seller-avatar">
+                            <div class="seller-text">
+                                <h4>Sarah Johnson</h4>
+                                <p>Member since 2022 • 4.8★ rating</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-primary" onclick="redirectToPayment()">
+                            <i class="fas fa-shopping-cart"></i> Buy Now
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-heart"></i> Add to Wishlist
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-comments"></i> Contact Seller
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Items List Section -->
+    <section class="items-list">
+        <div class="container">
+            <div class="list-header">
+                <h2>All Available Items</h2>
+                <div class="filters">
+                    <select class="filter-select">
+                        <option>All Categories</option>
+                        <option>Casual Wear</option>
+                        <option>Formal Wear</option>
+                        <option>Sportswear</option>
+                        <option>Footwear</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                        <option>Newest First</option>
+                        <option>Most Popular</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="items-grid">
+                <% if (typeof colthList !== 'undefined' && colthList.length > 0) { %>
+                    <% colthList.forEach((item, index) => { %>
+                        <div class="item-card" data-item-index="<%= index %>" onclick="updateFeaturedItem(<%= index %>)">
+                            <div class="card-image">
+                                <img src="<%= item.mainImageUrl %>" alt="<%= item.itemName %>">
+                                <div class="card-overlay">
+                                    <button class="quick-view">Quick View</button>
+                                </div>
+                                <% if (item.status === 'active') { %>
+                                    <div class="card-badge">New</div>
+                                <% } %>
+                            </div>
+                            <div class="card-content">
+                                <h3><%= item.itemName %></h3>
+                                <p class="card-category"><%= item.category %></p>
+                                <div class="card-price">
+                                    <span class="price">$<%= item.price %></span>
+                                    <span class="points"><%= item.points %> pts</span>
+                                </div>
+                                <div class="card-meta">
+                                    <span class="size">Size: <%= item.size %></span>
+                                    <span class="condition"><%= item.condition %></span>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <!-- Fallback items if no data is available -->
+                    <div class="item-card" onclick="updateFeaturedItem(0)">
+                        <div class="card-image">
+                            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300" alt="Classic White Shirt">
+                            <div class="card-overlay">
+                                <button class="quick-view">Quick View</button>
+                            </div>
+                            <div class="card-badge">New</div>
+                        </div>
+                        <div class="card-content">
+                            <h3>Classic White Shirt</h3>
+                            <p class="card-category">Formal Wear</p>
+                            <div class="card-price">
+                                <span class="price">$18</span>
+                                <span class="points">180 pts</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="size">Size: L</span>
+                                <span class="condition">Excellent</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add more fallback items as needed -->
+                <% } %>
+            </div>
+
+            <div class="pagination">
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">4</button>
+                <button class="page-btn next">Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Store the clothes data globally
+        const clothesData = <%- JSON.stringify(colthList || []) %>;
+        let filteredData = [...clothesData];
+        let currentFeaturedIndex = 0;
+
+        // DOM elements
+        const itemsGrid = document.querySelector('.items-grid');
+        const categorySelect = document.querySelectorAll('.filter-select')[0];
+        const sortSelect = document.querySelectorAll('.filter-select')[1];
+
+        // Render items
+        function renderItems(items) {
+            itemsGrid.innerHTML = '';
+            if (!items || items.length === 0) {
+                itemsGrid.innerHTML = `<div style="color:#fff;text-align:center;width:100%;">No items found.</div>`;
+                return;
+            }
+            items.forEach((item, index) => {
+                itemsGrid.innerHTML += `
+                    <div class="item-card" data-item-index="${index}" onclick="updateFeaturedItem(${index}, filteredData)">
+                        <div class="card-image">
+                            <img src="${item.mainImageUrl}" alt="${item.itemName}">
+                            <div class="card-overlay">
+                                <button class="quick-view">Quick View</button>
+                            </div>
+                            ${item.status === 'active' ? '<div class="card-badge">New</div>' : ''}
+                        </div>
+                        <div class="card-content">
+                            <h3>${item.itemName}</h3>
+                            <p class="card-category">${item.category}</p>
+                            <div class="card-price">
+                                <span class="price">$${item.price}</span>
+                                <span class="points">${item.points} pts</span>
+                            </div>
+                            <div class="card-meta">
+                                <span class="size">Size: ${item.size}</span>
+                                <span class="condition">${item.condition}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Re-attach quick view event
+            document.querySelectorAll('.quick-view').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    alert('Quick view feature coming soon!');
+                });
+            });
+        }
+
+        // Filtering and sorting
+        function filterAndSort() {
+            let category = categorySelect.value;
+            let sort = sortSelect.value;
+            filteredData = [...clothesData];
+
+            // Filter
+            if (category !== "All Categories") {
+                filteredData = filteredData.filter(item => item.category === category);
+            }
+
+            // Sort
+            if (sort === "Price: Low to High") {
+                filteredData.sort((a, b) => a.price - b.price);
+            } else if (sort === "Price: High to Low") {
+                filteredData.sort((a, b) => b.price - a.price);
+            } else if (sort === "Newest First") {
+                filteredData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            }
+            // else if (sort === "Most Popular") {
+            //     filteredData.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+            // }
+
+            renderItems(filteredData);
+
+            // Update featured item to first in filtered list
+            if (filteredData.length > 0) {
+                updateFeaturedItem(0, filteredData);
+            }
+        }
+
+        // Update featured item
+        function updateFeaturedItem(index, dataArr = filteredData) {
+            currentFeaturedIndex = index;
+            const item = dataArr[index];
+            if (!item) return;
+
+            document.getElementById('featuredImage').src = item.mainImageUrl;
+            document.getElementById('featuredImage').alt = item.itemName;
+            document.getElementById('featuredTitle').textContent = item.itemName;
+            document.getElementById('featuredPrice').textContent = `$${item.price}`;
+            document.getElementById('featuredPoints').textContent = `${item.points} pts`;
+            document.getElementById('featuredCategory').textContent = item.category;
+            document.getElementById('featuredSize').textContent = `${item.size}`;
+            document.getElementById('featuredCondition').textContent = item.condition;
+            document.getElementById('featuredBrand').textContent = item.brand || 'N/A';
+            document.getElementById('featuredColor').textContent = item.color || 'N/A';
+            document.getElementById('featuredDescription').textContent = item.description || 'No description available.';
+
+            // Update active state of cards
+            document.querySelectorAll('.item-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            const activeCard = document.querySelector(`.item-card[data-item-index="${index}"]`);
+            if (activeCard) activeCard.classList.add('active');
+
+            // Smooth scroll to top
+            document.querySelector('.featured-item').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Payment redirect
+        function redirectToPayment() {
+            const currentItem = filteredData[currentFeaturedIndex] || filteredData[0];
+            if (currentItem) {
+                sessionStorage.setItem('selectedItem', JSON.stringify(currentItem));
+                window.location.href = '/payment';
+            }
+        }
+
+        // Event listeners
+        categorySelect.addEventListener('change', filterAndSort);
+        sortSelect.addEventListener('change', filterAndSort);s
+
+        // Hamburger menu for mobile
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Initial render
+        filterAndSort();
+
+        // Expose functions to global scope
+        window.updateFeaturedItem = (index, dataArr = filteredData) => updateFeaturedItem(index, dataArr);
+        window.redirectToPayment = redirectToPayment;
+
+        // Add safety check for Buy Now form submission
+        // document.getElementById('buyNowForm').addEventListener('submit', function(e) {
+        //     const id = document.getElementById('buyNowItemId').value;
+        //     if (!id || id.length !== 24) {
+        //         e.preventDefault();
+        //         alert('Invalid item ID. Please select an item again.');
+        //     }
+        // });
+    </script>
+</body>
+</html>

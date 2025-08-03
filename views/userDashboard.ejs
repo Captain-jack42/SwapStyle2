@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - SwapStyle</title>
+    <link rel="stylesheet" href="/userDashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="bg-shape shape1"></div>
+        <div class="bg-shape shape2"></div>
+        <div class="bg-shape shape3"></div>
+        <div class="bg-shape shape4"></div>
+        <div class="bg-shape shape5"></div>
+    </div>
+
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <%- include('partials/navbar') %>
+
+    <div class="dashboard-container">
+        <!-- User Profile Section -->
+        <!-- User Profile Section -->
+<section class="profile-section">
+    <div class="container">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User Avatar">
+                    <span class="status-badge online">Online</span>
+                </div>
+                <div class="profile-info">
+                    <h1><%= typeof userName !== 'undefined' ? userName : 'User' %></h1>
+                    <div class="user-email"><%= typeof userEmail !== 'undefined' ? userEmail : 'user@email.com' %></div>
+                    <div class="user-stats">
+                        <div class="stat-item">
+                            <span class="stat-number"><%= typeof userClothesCount !== 'undefined' ? userClothesCount : 0 %></span>
+                            <span class="stat-label">Clothes Listed</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number"><%= typeof userPurchasesCount !== 'undefined' ? userPurchasesCount : 0 %></span>
+                            <span class="stat-label">Purchases</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">4.8★</span>
+                            <span class="stat-label">Rating</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-actions">
+                    <a href="#" class="btn btn-primary"><i class="fas fa-user-edit"></i> Edit Profile</a>
+                    <a href="/logout" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- Clothes Listed Section -->
+        <section class="stats-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Clothes Listed</h2>
+                </div>
+                <div class="items-grid">
+                    <% if (typeof userClothes !== 'undefined' && userClothes.length > 0) { %>
+                        <% userClothes.forEach(item => { %>
+                            <div class="item-card">
+                                <div class="item-image">
+                                    <img src="<%= item.mainImageUrl %>" alt="<%= item.itemName %>">
+                                    <div class="item-status <%= item.status %>"><%= item.status %></div>
+                                </div>
+                                <div class="item-content">
+                                    <h3><%= item.itemName %></h3>
+                                    <div class="item-category"><%= item.category %></div>
+                                    <div class="item-price">
+                                        <span class="price">$<%= item.price %></span>
+                                        <span class="points"><%= item.points %> pts</span>
+                                    </div>
+                                    <div class="item-meta">
+                                        <span class="date"><i class="fas fa-calendar"></i> <%= new Date(item.createdAt).toLocaleDateString() %></span>
+                                        <span class="status"><%= item.status === 'active' ? 'Available' : item.status %></span>
+                                    </div>
+                                    <div class="item-actions">
+                                        <% if (item.status === 'active') { %>
+                                            <button class="btn-sm btn-edit"><i class="fas fa-edit"></i> Edit</button>
+                                            <button class="btn-sm btn-delete"><i class="fas fa-trash"></i> Delete</button>
+                                        <% } else { %>
+                                            <button class="btn-sm btn-view"><i class="fas fa-eye"></i> View</button>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div style="width:100%;text-align:center;color:#aaa;font-size:1.2rem;padding:40px 0;">
+                            No cloth added till now.
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+
+        <!-- Purchases Section -->
+        <section class="purchases-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>My Purchases</h2>
+                </div>
+                <div class="items-grid">
+                    <% if (userPurchases && userPurchases.length > 0) { %>
+                        <% userPurchases.forEach(purchase => { %>
+                            <div class="item-card">
+                                <div class="item-image">
+                                    <img src="<%= purchase.itemImageUrl || '/default-image.jpg' %>" alt="Purchased Item">
+                                    <div class="item-status bought">Bought</div>
+                                </div>
+                                <div class="item-content">
+                                    <h3><%= purchase.itemName || 'Purchased Item' %></h3>
+                                    <div class="item-category"><%= purchase.itemCategory || '' %></div>
+                                    <div class="item-price">
+                                        <span class="price">$<%= purchase.price %></span>
+                                        <span class="points"><%= purchase.points %> pts</span>
+                                    </div>
+                                    <div class="item-meta">
+                                        <span class="date"><i class="fas fa-calendar"></i> <%= new Date(purchase.purchasedAt).toLocaleDateString() %></span>
+                                        <span class="seller"><i class="fas fa-user"></i> <%= purchase.sellerEmail %></span>
+                                    </div>
+                                    <div class="item-actions">
+                                        <button class="btn-sm btn-view"><i class="fas fa-eye"></i> View Details</button>
+                                        <button class="btn-sm btn-review"><i class="fas fa-star"></i> Review</button>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div style="width:100%;text-align:center;color:#aaa;font-size:1.2rem;padding:40px 0;">
+                            No purchases yet.
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
